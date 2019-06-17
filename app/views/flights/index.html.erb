@@ -1,0 +1,25 @@
+<h1>Search Flights</h1>
+<div>
+	<%= form_tag("/flights", method: "get") do %>
+		Date: 	<%= select_tag(:date, options_for_select(@available_dates)) %> <br>
+		From: 	<%= select_tag(:from_airport, options_for_select(@airports)) %>
+		To: 	<%= select_tag(:to_airport, options_for_select(@airports)) %><br>
+		Passengers: <%= select_tag(:passenger_amount, options_for_select(@passenger_amount) )%>
+		<br><br><%= submit_tag "Search" %>
+	<% end %>
+</div>
+
+<div>
+	<% if params[:date] %>
+		<h2>Flights on <%= format_date(params[:date]) %>, From <%= Airport.find(params[:from_airport]).code %> To <%= Airport.find(params[:to_airport]).code %>, with <%= pluralize(params[:passenger_amount],"passenger") %>
+			
+		</h2>
+		<% @flights.each do |f| %>
+			<span class="first-span">From: <%= f.start_airport.code %></span> 
+			<span>To: <%= f.finish_airport.code %></span>
+			<span>Date: <%= format_time(f.start_time) %></span>
+			<span>Duration: <%= f.duration %></span><br><br>
+		<% end %>
+	<% end %>
+
+</div>
