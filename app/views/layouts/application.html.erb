@@ -10,6 +10,11 @@
   </head>
 
   <body>
+    <% flash.each do |f| %>
+      <%= f %>
+    <% end %>
     <%= yield %>
+    <br><br>
+    <%= link_to "New booking", root_path %>
   </body>
 </html>

@@ -1,0 +1,19 @@
+<h1>Booking Details</h1>
+<p>
+	ID: <%= @booking.id %><br>
+	Passenger Amount: <%= @booking.passenger_amount %>
+</p>
+<h2>Flight Details</h2>
+<p>
+	To: <%= @flight.start_airport.code %><br>
+	From: <%= @flight.finish_airport.code %><br>
+	Time: <%= @flight.start_time %><br>
+	Duration: <%= @flight.duration %><br>
+</p>
+<h2>Flight Passengers</h2>
+<p>
+	<% @flight.passengers.each do |f| %>
+		Name: <%= f.name %><br>
+		Email: <%= f.email %><br><br>
+	<% end %>
+</p>

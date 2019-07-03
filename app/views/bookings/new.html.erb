@@ -1,0 +1,40 @@
+<h1>Bookings#new</h1>
+
+
+<% if @chosen_flight %>
+	<div class="flight-details">
+		From: <%= @chosen_flight.start_airport.code %><br>
+		To: <%= @chosen_flight.finish_airport.code %><br>
+		Time: <%= @chosen_flight.start_time %><br>
+		Duration: <%= @chosen_flight.duration %><br>
+		ID: <%= @chosen_flight.id %><br><br>
+	</div>
+
+
+	<h2>Enter the passenger information:</h2>
+	<p>
+		<%= form_for @booking, url: { action: "create" } do |f| %>
+			<%= f.hidden_field :flight_id, value: @chosen_flight.id %>
+			<%= f.hidden_field :passenger_amount, value: params[:passenger_amount] %>
+
+			<%= f.fields_for @booking.booking_passengers do |bp| %>
+
+				<% (params[:passenger_amount].to_i).times do %>
+					<%= bp.fields_for :passenger, index: bp.index do |pass| %>
+						<%= pass.label :name, "Name:" %>
+						<%= pass.text_field :name %><br>
+						<%= pass.label :email, "Email:" %>
+						<%= pass.text_field :email %><br><br>
+					<% end %>
+				<% end %>
+				
+			<% end %>
+		
+		
+			<%= f.submit "Book flight" %>
+
+		<% end %>
+
+	</p>
+
+<% end %>

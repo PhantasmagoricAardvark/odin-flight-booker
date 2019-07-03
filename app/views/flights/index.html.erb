@@ -14,11 +14,17 @@
 		<h2>Flights on <%= format_date(params[:date]) %>, From <%= Airport.find(params[:from_airport]).code %> To <%= Airport.find(params[:to_airport]).code %>, with <%= pluralize(params[:passenger_amount],"passenger") %>
 			
 		</h2>
-		<% @flights.each do |f| %>
-			<span class="first-span">From: <%= f.start_airport.code %></span> 
-			<span>To: <%= f.finish_airport.code %></span>
-			<span>Date: <%= format_time(f.start_time) %></span>
-			<span>Duration: <%= f.duration %></span><br><br>
+		<%= form_for @booking, url: new_booking_path, method: "get" do |f| %>
+			<% @flights.each do |f| %>
+				<%= radio_button_tag(:chosen_flight, f.id) %>
+				<span class="first-span">From: <%= f.start_airport.code %></span> 
+				<span>To: <%= f.finish_airport.code %></span>
+				<span>Date: <%= format_time(f.start_time) %></span>
+				<span>Duration: <%= f.duration %></span><br><br>
+			<% end %>
+			<%= hidden_field_tag :passenger_amount, params[:passenger_amount] %>
+
+			<%= submit_tag "Choose flight" %>
 		<% end %>
 	<% end %>
 
