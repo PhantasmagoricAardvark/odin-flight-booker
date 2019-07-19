@@ -11,10 +11,15 @@ class BookingsController < ApplicationController
 		@booking = Booking.new(flight_id: params[:booking][:flight_id], passenger_amount: params[:booking][:passenger_amount])
     i = 0
     while i < (params[:booking][:passenger_amount]).to_i
-    @booking.passengers.build(name: params[:booking][:booking_passenger][:passenger][i][:name], email: params[:booking][:booking_passenger][:passenger][i][:email])
+      @booking.passengers.build(name: params[:booking][:booking_passenger][:passenger][i][:name], email: params[:booking][:booking_passenger][:passenger][i][:email])
       i +=1
     end
 		if @booking.save
+      i = 0
+      while i < (params[:booking][:passenger_amount]).to_i
+        PassengerMailer.with(passenger: @booking.passengers[i], booking: @booking).thank_you_email.deliver_later
+        i += 1
+      end
       flash[:success] = "Booking created!"
       redirect_to @booking
 		else
